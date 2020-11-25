@@ -1,0 +1,46 @@
+{% extends 'course/basic.html'  %}
+{% block title %} {{assignment.ass_name}} {%  endblock  %}
+{% block body %} 
+
+{% if assignment.notgiven %}
+    <div>Assignment Deadline ended</div>
+    <div>Go back to Assignments Page</div>
+{% else %}
+    {% for c in chapters %}
+    <div class="container" style="margin-top:2% ;"><h2>{{c.chapter_name}}</h2></div><br>
+    <div class="container">
+        <div class="row">
+        {% for k,v in lectures.items %}
+            {% if k is c.chapter_name %}
+                    {% for l in v%}
+                    <div class="col-mid-3" style="margin-right:5%;">
+                        <div class="card" style="width: 18rem;background-color: rgb(30, 194, 21,0.3);">
+                            <div class="card-body" >
+                                <div><a href="/courseView/{{c.chapter_id}}/{{l.id}}">{{l.lecture_name}}</a></div>
+                            </div>
+                        </div>
+                    </div>        
+                    {%endfor%}
+
+            {% endif %}
+        {% endfor%}
+        {% for k,v in quizzes.items %}
+            {% if k is c.chapter_name %}
+                    {% for q in v%}
+                    <div class="col-mid-3" style="margin-right:5%;">
+                        <div class="card" style="width: 18rem;background-color:rgb(252, 186, 3,0.3);">
+                            <div class="card-body" >
+                                <div><a href="/courseView/{{c.chapter_id}}/quiz/{{q.id}}">{{q.quiz_name}}</a></div>
+                            </div>
+                        </div>
+                    </div>    
+                    {%endfor%}
+                    
+            {% endif %}
+        {% endfor%}
+        </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+{% endblock %}

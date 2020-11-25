@@ -1,0 +1,53 @@
+{% extends 'course/basic.html'  %}
+{% block title %} {{quiz.quiz_name}} {%  endblock  %}
+{% block body %}
+<div class="card text-white bg-info" style="width:20%;float:right;margin-right:2%;margin-top: 2%;position: sticky;top:2%;"><div class="card-body"><span id="timer_{{quiz.time}}" class="timer">{{quiz.time}} minutes 0 seconds remaining</span></div></div>
+  
+    <form action='/courseView/{{chapter.chapter_id}}/quiz/{{quiz.id}}/result/' method='POST' id="myForm">{% csrf_token %}
+        {% for q in questions  %}
+        <div class="card" style="width:70%;margin-top:3%;margin-bottom: 4%;margin-left: 3%;">
+            <div class="card-header" style="font-size: 1.4em;color: black;">Question {{q.id}} : {{q.statement}}</div><br>
+                <div class="card-body">
+                    {% for option in q.splitoptions  %}
+                        <div class="form-check">
+                            <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="{{q.id}}" value="{{option}}">
+                            {{option}}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+        </div>    
+        {% endfor %}
+    <div class="card" style="width:20%;margin-left:3%;"><button class="btn btn-primary" type="submit">Submit Test </button></div>    
+    
+    </form>
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+        var qtime=parseInt(document.getElementsByClassName('timer')[0].id.slice(6))
+        var countDownDate = new Date();
+        countDownDate.setMinutes( countDownDate.getMinutes()+ qtime );
+
+        var x = setInterval(function() {
+        
+        var now = new Date().getTime();
+
+    
+        var distance = countDownDate - now;
+
+        
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementsByClassName('timer')[0].innerHTML = minutes + " minutes " + seconds + " seconds remaining"; 
+        
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("myForm").submit();
+        }
+        }, 1000); 
+
+</script>
+{% endblock %}

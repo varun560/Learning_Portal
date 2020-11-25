@@ -1,0 +1,16 @@
+{% extends 'course/basic.html'  %}
+{% block title %} {{lecture.lecture_name}} {%  endblock  %}
+{% block body %} 
+<div class="card" style="width:70%;margin-left: 5%;margin-top: 5%;">
+    <div class="card-header" style="margin-bottom: 3%;"><h2>{{lecture.lecture_name}}</h2></div>
+    <div class="card-body">
+            <div >{% autoescape off %}{{lecture.ytvideo}}{% endautoescape %}  </div>
+        {%if lecture.src  %}
+            <div><video style="object-fit: initial;width: 400px;height: 300px;" controls><source src="/media/{{lecture.src}}" type="video/mp4">Your browser does not support the video tag.</video> </div>    
+        {% endif %}
+        <div  style="margin-top: 2%;">
+            <a href="javascript:history.back()">Go Back</a>
+        </div>
+    </div>
+</div>
+{%endblock %}
